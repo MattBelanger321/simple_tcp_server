@@ -30,12 +30,8 @@ namespace riwa::bosch {
             return error;
         }
 
-        std::cout << "Listening for a Connection\n";
-
+        std::cout << "Waiting for a Connection\n";
         acceptor.listen();
-
-        std::cout << "Connection Found! Accepting...\n";
-
         acceptor.accept( socket, error );
 
         if ( error ) {
