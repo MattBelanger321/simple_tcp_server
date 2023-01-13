@@ -19,5 +19,5 @@ bushido(
 
 set(Boost_USE_STATIC_RUNTIME ON CACHE BOOL "")
 
-add_subdirectory("bosch_communication")
+add_subdirectory("tcp_server")
 add_subdirectory("tcp_server_test")

@@ -17,7 +17,7 @@ namespace riwa::bosch {
         void close();
 
         boost::system::error_code read( std::string & data ) { return {}; };
-        boost::system::error_code write( std::string const & data ) { return {}; };
+        boost::system::error_code write( std::string const & data );
 
         ~tcp_server() { close(); }
 

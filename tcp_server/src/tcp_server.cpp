@@ -44,10 +44,13 @@ namespace riwa::bosch {
         return error;
     }
 
-    void tcp_server::close()
+    boost::system::error_code tcp_server::write( std::string const & data )
     {
-        std::cout << "Closing Server\n";
-        acceptor.close();
-        socket.close();
+        boost::system::error_code error;
+        auto bytes = boost::asio::write( socket, boost::asio::buffer( data, data.length() ), error );
+        std::cout << bytes << "  Bytes Wrote\n";
+        return error;  //
     }
+
+    void tcp_server::close() { std::cout << "Closing Server\n"; }
 }  // namespace riwa::bosch

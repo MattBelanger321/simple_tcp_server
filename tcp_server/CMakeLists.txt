@@ -1,16 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(bosch_communication LANGUAGES CXX)
+project(tcp_server LANGUAGES CXX)
 
 add_library(${PROJECT_NAME}
-    "include/bosch_communicator.hpp"
-    "include/converter_interface.hpp"
-    "include/bosch_protocol.hpp"
 	"include/tcp_server.hpp"
-
-    "src/bosch_protocol.cpp"
-    # "src/bosch_converter_interface.cpp"
-    "src/bosch_communicator.cpp"
 	"src/tcp_server.cpp"
 )
 
