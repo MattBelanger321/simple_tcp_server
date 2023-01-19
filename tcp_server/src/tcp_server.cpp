@@ -52,5 +52,32 @@ namespace riwa::bosch {
         return error;  //
     }
 
+    // assumes messages start and end with "
+    boost::system::error_code tcp_server::read( std::string & data )
+    {
+        boost::system::error_code error;
+
+        std::string curr_char;
+
+        auto bytes = boost::asio::read( socket, boost::asio::dynamic_buffer( curr_char ),
+                                        boost::asio::transfer_exactly( 1 ), error );  // read start delimeter
+
+        data.append( curr_char );
+        while ( true ) {
+            curr_char = "";
+            bytes += boost::asio::read( socket, boost::asio::dynamic_buffer( curr_char ),
+                                        boost::asio::transfer_exactly( 1 ), error );
+            data.append( curr_char );
+            if ( curr_char == "\"" )
+                break;
+        }
+
+        std::cout << bytes << " Bytes Read\n";
+
+        std::cout << "Read " << data << "\n";
+
+        return error;
+    }
+
     void tcp_server::close() { std::cout << "Closing Server\n"; }
 }  // namespace riwa::bosch

@@ -1,5 +1,5 @@
 #include <bits/chrono.h>
-#include <tcp_server.hpp>
+#include <udp_server.hpp>
 
 #include <chrono>
 
@@ -13,7 +13,7 @@
 
 int main()
 {
-    riwa::bosch::tcp_server server( 55555 );
+    riwa::bosch::udp_server server( 55555 );
     constexpr int           cycles = 80;
 
     std::mutex              mutex;

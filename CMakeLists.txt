@@ -20,4 +20,6 @@ bushido(
 set(Boost_USE_STATIC_RUNTIME ON CACHE BOOL "")
 
 add_subdirectory("tcp_server")
+add_subdirectory("udp_server")
 add_subdirectory("tcp_server_test")
+add_subdirectory("udp_server_test")
