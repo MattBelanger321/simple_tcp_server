@@ -1,7 +1,9 @@
+#include <stdexcept>
 #include <udp_server.hpp>
 
 #include <boost/asio.hpp>
 
+#include <boost/array.hpp>
 #include <iostream>
 
 namespace riwa::bosch {
@@ -27,10 +29,11 @@ namespace riwa::bosch {
 
         std::cout << "Waiting for a response\n";
 
-        std::string init_message;
-        read( init_message );
-        write( init_message );
+        boost::array< char, 9 > curr_char;
+        socket.receive_from( boost::asio::buffer( curr_char, 9 ), client_endpoint, 0,
+                             error );  // read start delimeter
 
+        std::cout << "client responded\n";
         return error;
     }
 
@@ -46,18 +49,28 @@ namespace riwa::bosch {
     boost::system::error_code udp_server::read( std::string & data )
     {
         boost::system::error_code error;
+        std::size_t               bytes;
+        {
+            boost::array< char, 20 > curr_char;
+            bytes = socket.receive_from( boost::asio::buffer( curr_char, 117 ), client_endpoint, 0,
+                                         error );  // read start delimeter
+            std::cout << bytes << " bytes read\n";
+        }
 
-        std::string curr_char;
-        auto        bytes = socket.receive_from( boost::asio::buffer( curr_char, 1 ), client_endpoint, 0,
-                                                 error );  // read start delimeter
+        return error;
 
-        data.append( curr_char );
+        std::cout << data << "\n";
         while ( true ) {
-            curr_char = "";
-            bytes += socket.receive( boost::asio::buffer( curr_char, 1 ), 0,
-                                     error );  // read start delimeter
-            data.append( curr_char );
-            if ( curr_char == "\"" )
+            boost::array< char, 1 > curr_char;
+            bytes += socket.receive_from( boost::asio::buffer( curr_char, 1 ), client_endpoint, 0,
+                                          error );  // read start delimeter
+            if ( bytes <= 0 ) {
+                throw std::runtime_error( "Read 0 Bytes" );
+            }
+
+            data.append( { curr_char[0] } );
+
+            if ( curr_char[0] == '\"' )
                 break;
         }
 

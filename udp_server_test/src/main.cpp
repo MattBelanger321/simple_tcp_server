@@ -13,7 +13,7 @@
 
 int main()
 {
-    riwa::bosch::udp_server server( 55555 );
+    riwa::bosch::udp_server server( 5000 );
     constexpr int           cycles = 80;
 
     std::mutex              mutex;
@@ -32,29 +32,29 @@ int main()
         // while ( end_delay - start_delay < 250ms ) {
         //     end_delay = clock.now();
         // }
-        // std::this_thread::sleep_for( 250ms - ( end_delay - start_delay ) );
 
         auto start_timer = clock.now();
-        start_delay      = clock.now();
+        // start_delay      = clock.now();
         server.write( "\"Tessonics_Snd;1;1;32857;Spot_32857;TestWeldjob;1;Gun1_X;150;2;combination1;sheet1;"
                       "material1;80;sheet2;material2;70;\"" );
         server.read( read_in );
         auto end_timer = clock.now();
 
-        auto end_delay = clock.now();
+        // auto end_delay = clock.now();
+        // std::this_thread::sleep_for( 500ms - ( end_delay - start_delay ) );
 
         times.push_back( std::chrono::duration_cast< std::chrono::microseconds >( end_timer - start_timer ) );
-        int k = 0;
-        for ( k = 0; k < 1000000000; k++ ) {
-            int j = k;
-            j++;
-        }
-        std::cout << k << "\n";
+        // int k = 0;
+        // for ( k = 0; k < 1000000000; k++ ) {
+        //     int j = k;
+        //     j++;
+        // }
+        // std::cout << k << "\n";
     }
 
     std::cout << "Intervals\n";
 
-    std::ofstream out( "times.csv" );
+    std::ofstream out( "udp_asap_times.csv" );
 
     for ( auto x : times ) {
         std::cout << x << "\n";
